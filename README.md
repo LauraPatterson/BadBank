@@ -1,5 +1,7 @@
 # BadBank
+
 <img src="./public/bank.png" width=250 height=250>
+
 ## Description
 Node.js app that uses MongoDB and runs on port 3000 
 
