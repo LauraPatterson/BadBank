@@ -18,9 +18,9 @@ Wrote all the files from scratch
 4. Once the application is running locally, open your browser and go to localhost:3000
 
 ## Roadmap of future improvements:
--[] Fix my docker
--[] Add user context in nav
--[] Add Firebase Auth
+- [ ] Fix my docker
+- [ ] Add user context in nav
+- [ ] Add Firebase Auth
 
 ## License Information
 Distributed under MIT License  
