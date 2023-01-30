@@ -1,10 +1,10 @@
 const mongoose       = require('mongoose');
 
 // for local testing
-//const url            = 'mongodb://localhost:27017/lp-badbank';
+const url            = 'mongodb://localhost:27017/lp-badbank';
 
 // for docker production 
-const url            = 'mongodb://lp-mongo:27017/lp-badbank';
+//const url            = 'mongodb://lp-mongo:27017/lp-badbank';
 
 // connect to mongo
 mongoose.connect(url, {useUnifiedTopology: true}, (err, client) => {
