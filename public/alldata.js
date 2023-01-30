@@ -1,25 +1,29 @@
-const { response } = require( "express" );
-
-function AllData(){
+function AllData() {
   const [data, setData] = React.useState('');
 
-  
-  React.useEffect(() => {
-    // fetch all accounts from API
-    fetch('/account/all')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setData(JSON.stringify(data));      
-      });
-  }, []);
+  const ctx = React.useContext(UserContext);
+  console.log(JSON.stringify(ctx));
 
-  return (
-    <Card
-    txtcolor="black"
-    header="All Data in Store"
-    title="Track User Submissions"
-    text= {data}
-  />    
-  );
+  React.useEffect(() => {
+      fetch('/account/all')
+      .then(response => response.json())
+      .then(result => {
+        console.log(JSON.stringify(result));
+        setData(result);
+      });
+  },[]);
+
+    // create card for each account
+  console.log(data);
+  let map1 = [];
+  if(data){
+  map1 = data.map((account) =>
+  <Card
+  txtcolor="black"
+  header= {account.name}
+  title={account.email}
+  text= {`Password: ${account.password} \nBalance: ${account.balance}`}
+/>);
+  }
+  return (map1);
 }

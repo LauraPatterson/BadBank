@@ -1,10 +1,4 @@
-const Route       = ReactRouterDOM.Route;
-const Link        = ReactRouterDOM.Link;
-const HashRouter  = ReactRouterDOM.HashRouter;
-const UserContext = React.createContext(null);
-
 function Card(props){
-
     function classes(){
         const bg  = props.bgcolor ? ' bg-' + props.bgcolor : 'bg-white';
         const txt = props.txtcolor ? ' text-' + props.txtcolor: ' text-black';
@@ -22,4 +16,4 @@ function Card(props){
         </div>
       </div>
       );
-}
+    }
