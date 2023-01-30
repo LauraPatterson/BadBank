@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  lp-mongo:
+    image: mongo
+    container_name: lp-mongodb
+    ports: 
+      - 27017:27017
+  laurapattersonfullstackbankingapplication:
+    image: laurapattersonfullstackbankingapplication
+    container_name: lp-webserver
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3001:3001
+    depends_on:
+      - lp-mongo

@@ -1,21 +1,10 @@
-FROM node:18-slim
-
-# Step 3.1 - Add working directory
-WORKDIR /BankingAppFinal
-
-# Step 3.2 - Copy npm dependencies
-COPY package.json /BankingAppFinal/package.json
-
-# Step 3.3 - Install dependencies
-RUN npm install
-
-# Copy app source code
-COPY /public/. /BankingAppFinal/public/.
-COPY index.js /BankingAppFinal/index.js
-COPY index.js /BankingAppFinal/dal.js
-
-#Expose port and start the application
-
-EXPOSE 3000
-
-RUN node index.js
+FROM node:lts-alpine
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install --production --silent && mv node_modules ../
+COPY . .
+EXPOSE 3001
+RUN chown -R node /usr/src/app
+USER node
+CMD ["node", "index.js"]

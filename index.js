@@ -1,71 +1,106 @@
-var express = require('express');
-var app     = express();
-var cors    = require('cors');
-var dal     = require('./dal');
+const {create, all, balance, deposit, withdraw, login, deleteAll, resetDatabase} = require('./dal.js');
+const express = require('express');
+const cors    = require('cors');
+//const bodyParser = require('body-parser');
+const app     = express();
 
-// used to serve static files from public directory
-app.use(express.static('public'));
 app.use(cors());
+//app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json());
+app.use(express.static('public'));
 
-// create user account
-app.get('/account/create/:name/:email/:password', (req,res) => {
-    
-    dal.create(req.params.name, req.params.email,req.params.password)
-        .then((user) => {
-            console.log(user);
-            res.send(user);
-        })
-        .catch((err) => res.send(err));
+
+// confirm express running
+app.get('/', function(req, res){
+    res.send('Express is running')
 });
 
-app.get('/account/login/:email/:password', (req,res) => {
-    
-    dal.login(req.params.email, req.params.password)
-        .then((doc) => {
-            console.log(doc);
-            res.send(doc);
-        })
-        .catch((err) => res.send(err));
+// create account
+app.get('/account/create/:name/:email/:password', (req, res) => {
+    create({
+        name: req.params.name, 
+        email: req.params.email,
+        password: req.params.password
+    })
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(err));
 });
 
+// read all accounts
+app.get('/account/all', function(req, res){
+    all()
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(err));
+});
+
+// check if password correct for email and returns account
+app.get('/account/login/:email/:password', function(req, res){
+    login(req.params.email, req.params.password)
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(err));
+});
+
+// returns specific account name and balance
+app.get('/account/balance/:email', function(req, res){
+    console.log(req.params.email);
+    balance(req.params.email)
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(err));
+});
+
+// returns account name and updated balance
 app.get('/account/deposit/:email/:amount', (req,res) => {
-    
-    dal.deposit(req.params.email, req.params.amount)
-        .then((doc) => {
-            console.log(doc);
-            res.send(doc);
-        });
+    deposit(req.params.email, req.params.amount)
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(err));
 });
 
+// returns account name and updated balance
 app.get('/account/withdraw/:email/:amount', (req,res) => {
-    
-    dal.withdraw(req.params.email, req.params.amount)
-        .then((doc) => {
-            console.log(doc);
-            res.send(doc);
-        })
-        .catch(res.send({name: 'error', balance: 'email not found'}));
+    withdraw(req.params.email, req.params.amount)
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(err));
+});
+/*uncomment for testing
+// deletes all accounts
+app.get('/account/delete/all', (req, res) => {
+    deleteAll()
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(error));
 });
 
-app.get('/account/balance/:email', (req, res) => {
-    
-    dal.balance(req.params.email)
-        .then((doc) => {
-            console.log(doc);
-            res.send(doc);
-        })
-        .catch(res.send({name: 'error', balance: 'email not found'}));
-});
+// resets account Collection
+app.get('/account/reset', (req, res) => {
+    resetDatabase()
+    .then(response => {
+        console.log(response);
+        res.send(response);
+    })
+    .catch(err => console.log(error));
+});*/
 
-app.get('/account/all', (req,res) => {
-    
-    dal.all()
-        .then((docs) => {
-            console.log(docs);
-            res.send(docs);
-        });
+const port = 3001;
+app.listen(port, () => {
+    console.log('Running on port '+ port + '!')
 });
-
-var port = 3000;
-app.listen(port);
-console.log('Running on port: '+ port);
